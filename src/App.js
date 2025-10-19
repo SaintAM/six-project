@@ -1,28 +1,27 @@
 import { useState } from "react";
+import Game from "./components/Game";
+import Result from "./components/Result";
+import { questions } from "./data";
 import "./index.scss";
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [step, setStep] = useState(0);
+  const [correct, setCorrect] = useState(0);
 
-  const onClickPlus = () => {
-    setCount(count + 1);
-  };
-  const onClickMinus = () => {
-    setCount(count - 1);
+  const question = questions[step];
+
+  const onClickVariant = (index) => {
+    setStep(step + 1);
+    setCorrect(question.correct === index ? correct + 1 : correct);
   };
 
   return (
     <div className="App">
-      <div>
-        <h2>Счетчик:</h2>
-        <h1>{count}</h1>
-        <button className="minus" onClick={onClickMinus}>
-          - Минус
-        </button>
-        <button className="plus" onClick={onClickPlus}>
-          Плюс +
-        </button>
-      </div>
+      {questions.length !== step ? (
+        <Game step={step} question={question} onClickVariant={onClickVariant} />
+      ) : (
+        <Result correct={correct} />
+      )}
     </div>
   );
 }
